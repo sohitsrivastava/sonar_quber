@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  sonarqube:
+    image: sonarqube:7.7-community
+    depends_on:
+      - init
+    environment:
+      SONARQUBE_JDBC_URL: jdbc:mysql://db:3306/sonar?useUnicode=true&characterEncoding=utf8
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_temp:/opt/sonarqube/temp
+    ulimits:
+      nproc: 131072
+      nofile:
+        soft: 8192
+        hard: 131072
+    ports:
+      - "9000:9000"
+  init:
+    image: bash
+    privileged: true
+    user: root
+    volumes:
+      - /opt/init.sh:/mnt/init.sh
+    command: ["sh", "-e", "/mnt/init.sh"]
+	
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_temp:
