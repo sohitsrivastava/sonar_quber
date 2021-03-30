@@ -28,7 +28,6 @@ services:
     volumes:
       - /opt/init.sh:/mnt/init.sh
     command: ["sh", "-e", "/mnt/init.sh"]
-	
 volumes:
   sonarqube_data:
   sonarqube_extensions:
